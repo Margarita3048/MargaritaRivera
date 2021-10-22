@@ -1,16 +1,23 @@
-# Título: Análisis exploratorio de datos empleados para el análisis de expresión global de genes asociados a la edad de maduración en la cepa Lochy de _Salmo salar_
+# Análisis exploratorio de datos empleados para el análisis de expresión global de genes asociados a la edad de maduración en la cepa Lochy de _Salmo salar_
 
 #### Autor: Ing. Agrop. Margarita Rivera
 
 ## Resumen del problema a resolver
 
-1.	Comparar la expresión global de genes en peces machos de maduración temprana y no maduros de la cepa Lochy cultivados en agua dulce.
+La cepa Lochy de salmón del Atlántico se cultiva en Chile y está patentada por la empresa de Salmones Camanchaca. Esta cepa representa un alto valor productivo y comercial debido a que posee una elevada tasa de crecimiento. Sin embargo, lochy se caracteriza también por poseer elevadas tasas de maduración temprana, lo que claramente se torna en un factor desfavorable para la industria, pues a pesar de que los ciclos de engorda con esta cepa pueden acortarse, exite el riesgo de que se presente un determinad porcentaje de peces maduros tempranos a pesar de la eficacia de estrategias de control empleadas como la manipulación del fotoperíodo.
 
-En condiciones de cultivos artificiales, tanto en agua dulce como en el mar, la característica de maduración temprana de la cepa Lochy persiste y genera implicaciones perjudiciales en los entornos comerciales. En el caso de cultivos destinados a engorda, donde el problema productivo toma mayor importancia, se aplica la siembra controlada en épocas del año que limiten la posibilidad de maduración temprana evitando la ocurrencia de 2 inviernos marinos, lo que fue posible dado la elevada tasa de crecimiento de esta cepa. A pesar de esta y otras estrategias de control, aún hay peces con maduración temprana, por ejemplo, en los salmones de 2 años que se destinan a reproducción la incidencia de esta característica es alta (Figura 2) como lo demuestra un análisis exploratorio de esta cepa en el segundo año del ciclo de agua dulce donde se revelan diferencias significativas en la proporción de peces maduros y no maduros entre familias y entre sexos (Fig. 3 y Fig. 4). Con esto se evidencia que el rasgo aún  presente en esta cepa probablemente deba su expresión a un componente genético que requiere ser dilucidado, lo que lleva a plantearnos la interrogante de ¿Qué genes o polimorfismos influencian las diferencias observadas en la edad de maduración en machos de la cepa Lochy de Salmo salar?
+Para tratar el problema de maduración temprana en cultivos artificiales en engorda donde las implicaciones perjudiciales a los entornos comerciales se tornan más graves, es necesario optar por nuevas estrategias de control. El componente genético asociado a la edad de maduración en _Salmo salar_ ha sido indagado recientemente y se conocen algunos genes que gobiernan con gran efecto este rasgo en la especie tanto a nivel silvestre como domesticado. En el caso de que se puedan encontrar relaciones entre marcadores descritos previamente en bibliografía o en su caso, nuevos genes que influencien la maduración temprana en la cepa se podrán establecer nuevas alternativas de manejo del fenómeno e incluso establecer protocolos de selección genómica en los Programas de Mejora Genética en los que se empleen animales con estas ventajas en crecimiento pero con dificultades de maduración.
+
+El estudio se realiza únicamente en machos reproductores cultivando en agua dulce, pues si bien el problema productivo se torna más grave en engorda, son los reproductores criados en agua dulce los que diseminan la característica de maduración temprana a su descendencia en campo y de acuerdo a las observaciones en campo y según lo descrito en bibliografía, el rasgo predomina en machos lo que representa un desafió mayor para la producción de estos peces, pues los reporductores están contribuyendo a la prevalencia de la maduración temprana de sus filiales en el mar.
+
 
 
 ## Resumen de variables bajo estudio
 
 Factores para analizar
 Número de observaciones
+FAMILIA	PESO_(g)	LONGITUD_(cm)	PESO_GONADA_(g)	SEXO	ESTADIO
 
+
+
+## Referencias
