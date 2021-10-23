@@ -1,6 +1,8 @@
-# Análisis exploratorio de datos empleados para el estudio de expresión global de genes asociados a la edad de maduración en machos de la cepa Lochy de _Salmo salar_
+# Título del proyecto
+Análisis exploratorio de datos empleados para el estudio de expresión global de genes asociados a la edad de maduración en machos de la cepa Lochy de _Salmo salar_
 
-#### Autor: Ing. Agrop. Margarita Rivera
+#### Autor
+Ing. Agrop. Margarita Rivera
 
 ## Resumen del problema a resolver
 
