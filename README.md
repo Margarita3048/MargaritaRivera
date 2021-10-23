@@ -1,5 +1,4 @@
-# Título del proyecto
-Análisis exploratorio de datos empleados para el estudio de expresión global de genes asociados a la edad de maduración en machos de la cepa Lochy de _Salmo salar_
+# Análisis exploratorio de datos empleados para un estudio de expresión global de genes asociados a la edad de maduración en machos de la cepa Lochy de _Salmo salar_
 
 #### Autor
 Ing. Agrop. Margarita Rivera
@@ -10,16 +9,20 @@ La cepa Lochy de salmón del Atlántico se cultiva en Chile y está patentada po
 
 Para tratar el problema de maduración temprana en cultivos artificiales en engorda donde las implicaciones perjudiciales a los entornos comerciales se tornan más graves, es necesario optar por nuevas estrategias de control. El componente genético asociado a la edad de maduración en _Salmo salar_ ha sido indagado recientemente y se conocen algunos genes que gobiernan con gran efecto este rasgo en la especie tanto a nivel silvestre como domesticado. En el caso de que se puedan encontrar relaciones entre marcadores descritos previamente en bibliografía o en su caso, nuevos genes que influencien la maduración temprana en la cepa se podrán establecer nuevas alternativas de manejo del fenómeno e incluso establecer protocolos de selección genómica en los Programas de Mejora Genética en los que se empleen animales con estas ventajas en crecimiento pero con dificultades de maduración.
 
-El estudio se realiza únicamente en machos reproductores cultivando en agua dulce, pues si bien el problema productivo se torna más grave en engorda, son los reproductores criados en agua dulce los que diseminan la característica de maduración temprana a su descendencia en campo y de acuerdo a las observaciones en campo y según lo descrito en bibliografía, el rasgo predomina en machos lo que representa un desafió mayor para la producción de estos peces, pues los reporductores están contribuyendo a la prevalencia de la maduración temprana de sus filiales en el mar.
+El estudio se realiza únicamente en machos reproductores cultivando en agua dulce, pues si bien el problema productivo se torna más grave en engorda, son los reproductores criados en agua dulce los que diseminan la característica de maduración temprana a su descendencia en campo y de acuerdo a las observaciones, el rasgo predomina en machos, lo que representa un desafío mayor para la producción de estos peces, pues los reproductores están contribuyendo a la prevalencia de la maduración temprana de sus filiales en el mar.
 
+## Resumen de observaciones y variables bajo estudio
 
+El número total de observaciones fuer de 40 reproductores machos de _Salmo salar_
+En este estudio se han considerado las variables y factores descritos en la tabla 1:
 
-## Resumen de variables bajo estudio
+|Nombre|Variable/factor|Tipo|
+|------|---------------|----|
+|Familia|Factor||
+|Peso|Variable|Cuantitativa|
+|Longitud|Variable| Cuantitativa|
+|Peso gonadal|Variable| Cuantitativa|
+|índice gonadosomático|Variable| Cuantitativa|
+|Sexo|Factor||
+|Estadío|Factor||
 
-Factores para analizar
-Número de observaciones
-FAMILIA	PESO_(g)	LONGITUD_(cm)	PESO_GONADA_(g)	SEXO	ESTADIO
-
-
-
-## Referencias
