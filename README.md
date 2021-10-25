@@ -18,11 +18,11 @@ En este estudio se han considerado las variables y factores descritos en la tabl
 
 |Nombre|Variable/factor|Tipo|
 |------|---------------|----|
-|Familia|Factor||
+|Familia|Factor|Discreta|
 |Peso|Variable|Cuantitativa|
 |Longitud|Variable| Cuantitativa|
 |Peso gonadal|Variable| Cuantitativa|
 |índice gonadosomático|Variable| Cuantitativa|
-|Sexo|Factor||
-|Estadío|Factor||
+|Sexo|Factor|Discreta|
+|Estadío|Factor|Discreta|
 
