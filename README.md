@@ -13,7 +13,10 @@ Bajo este contexto, en este estudio se ha realizado un muestreo de salmones repr
 
 ## Resumen de observaciones y variables bajo estudio
 
-El número total de observaciones fuer de 40 reproductores machos de _Salmo salar_
+Por favor, profundice en la sección "Resumen de observaciones y variables bajo estudio" el origen de los datos. No es claro que los animales están en agua dulce, tampoco el origen de la piscicultura, fecha y año de muestreo. Como sabe que los peces están maduros, alguna característica externa que se evaluó. Como sabe de que familia son, será que estaban con marcas y se registra en una base de datos el pedigree. Los animales maduros y no maduros son hermanos?.
+
+El número total de observaciones consistió en 40 reproductores machos de la cepa Lochy de _Salmo salar_ cultivados en agua dulce. El muestreo de estos peces se realizó en una piscicultura de agua dulce perteneciente a la empresa de Salmones Camanchaca ubicada en Polcura al sur de C
+
 En este estudio se han considerado las variables y factores descritos en la tabla 1:
 
 |Nombre|Variable/factor|Tipo|
