@@ -26,6 +26,5 @@ Tabla 1: Variables medidas en el muestreo de maduración de reproductores machos
 |Longitud|Variable| Cuantitativa|
 |Peso gonadal|Variable| Cuantitativa|
 |índice gonadosomático|Variable| Cuantitativa|
-|Sexo|Factor|Discreta|
 |Estadío|Factor|Discreta|
 
