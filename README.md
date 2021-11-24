@@ -30,4 +30,6 @@ Tabla 1: Variables medidas en el muestreo de maduración de reproductores machos
 
 ## Métodos estadísticos aplicados
 
+Las variables respuesta analizadas en este trabajo fueron, el índice gonadosomático (IGS - %) y peso gonadal (g) en función del estadío de maduración, sin considerar la familia de la que provenían los individuos. Se realizó una comprobación del cumplimiento de supuestos y se aplicaron pruebas estadísticas no paramétricas para evaluar las diferencias entre ambos grupos.
+
 ## Conclusión principal
