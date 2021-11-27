@@ -1,5 +1,5 @@
 ---
-title: "Análisis exploratorio de variables morfométricas y productivas de la cepa Lochy _Salmo salar_"
+title: "Análisis exploratorio de variables morfométricas y productivas de la cepa Lochy de _Salmo salar_"
 author: Margarita Rivera
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: pdf_document
@@ -15,34 +15,38 @@ cat("\\newpage")
 cat("\\newpage")
 ```
 
-# Introducción
+# INTRODUCCIÓN
 
 El Análisis exploratorio consiste en el uso de gráficos y visualizaciones para poder analizar conjuntos de datos. En este trabajo se realiza un análisis exploratorio de una base de datos de variables morfométricas y productivas de la cepa Lochy de salmón del Atlántico con el fin de visualizar de forma gráfica y tabular algunas variables que puedan estar relacionadas con la edad de maduración en la cepa. 
 
 # DESARROLLO
 
-**1. Instalación de librerías**
+## 1. LIBRERÍAS
 
 Las librerías empleadas en el desarrrollo de este reporte fueron:
 
-|:**Librería**:|:**Función**:|
-|--------------|-------------|
+|**Librería**|**Función**|
+|:--------------:|:-------------:|
 |readxl|Lectura de archivos con extensión xlsx|
 |dplyr|permite la manipulación y distintas operaciones con data frames (trabajo con tuberías)|
 |ggplot2|Visualización de datos a través de generación de gráficos|
-|pander|Generación y estética de tablas|
+|knitr|Generación y estética de tablas|
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F)
+knitr::opts_chunk$set(warning = F)
 library(readxl)
 library(dplyr)
 library(ggplot2)
 library(pander)
-
+library(knitr)
+library(lmtest) 
+library(car)
 dat<-read_excel("salmon_dat.xlsx")
+
 ```
 
-**2. HISTOGRAMAS PARA VARIABLES CUANTITATIVAS**
+## 2. HISTOGRAMAS PARA VARIABLES CUANTITATIVAS
 
 **Describir la variación de las variables de estudio usando histogramas**
 
@@ -50,137 +54,423 @@ dat<-read_excel("salmon_dat.xlsx")
 
 ```{r}
 
-dat%>%ggplot(aes(x=`PESO_(g)`))+ geom_histogram(position = 'identity', col='black', fill='blue', alpha=0.4)+labs(title="Histograma de peso corporal (g)")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso (g)")+theme_classic()
+dat%>%ggplot(aes(x=`PESO_(g)`, fill=ESTADIO))+ geom_histogram(position = 'identity', col='black', bins=6, alpha=0.4)+labs(caption=" Fig 1: Histograma de peso corporal (g)")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso (g)")+theme_classic()
 
 ```
 
+En la Fig 1, se puede apreciar la distribución de la variable peso en animales maduros e inmaduros. Para los machos maduros se observa una distribución sesgada a la izquierda mientras que para los inmaduros un poco más sesgada a la derecha. Visualmente se podría concluir que los pesos de los animales se acercan más a una distribución normal. También se nota que los pesos de los animales maduros son menores a los de los animales inmaduros.
 
-**1.2. Histograma de longitud (cm)**
+**2.2. Histograma de longitud (cm)**
 
 ```{r}
-dat%>%ggplot(aes(x=`LONGITUD_(cm)`))+ geom_histogram(col='black', fill='blue', alpha=0.5)+labs(title="Histograma de longitud (cm)")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Longitud (cm)")+theme_classic()
+dat%>%ggplot(aes(x=`LONGITUD_(cm)`, fill=ESTADIO))+ geom_histogram(bins= 6,col='black', alpha=0.5)+labs(caption="Fig 2. Histograma de longitud (cm)")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Longitud (cm)")+theme_classic()
 ```
 
+En la Fig 2, se observa la distribución para la variable longitud en animales maduros e inmaduros. En ambos casos, visualmente, hay una tendencia a una distribución normal. Al igual que el peso, en los animales maduros se presentó una menor longitud en comparación con los machos inmaduros.
 
-**1.3. Histograma de peso gonadal (g)**
+\newpage
+
+**2.3. Histograma de peso gonadal (g)**
 
 ```{r}
-dat%>%ggplot(aes(x=`PESO_GONADA_(g)`))+ geom_histogram( col='black', fill='blue', alpha=0.5)+labs(title="Histograma de peso gonadal (g)")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso gonadal (cm)")+theme_classic()
+dat%>%ggplot(aes(x=`PESO_GONADA_(g)`, fill=ESTADIO))+ geom_histogram(bins=8,
+col='black', alpha=0.5)+labs(caption="Fig 3. Histograma de peso gonadal (g)")+ 
+theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+
+theme(panel.background = element_rect(fill = "transparent"))+
+labs(x= "Peso gonadal (g)")+theme_classic()
 ```
 
-**1.4. Histograma de índice gonadosomático (g)**
+En la Fig 3, se observa la distribución para el peso gonadal en relación a su estadío de maduración. En los animales inmaduros, es claro que no se cumple con una distribución normal debido a que, la mayor cantidad de pesos gonadales se concentra en valores de 1g. Por otro lado en el caso de los animales maduros se observa una distribución sesgada hacia la izquierda, concentrando la mayor cantidad de datos entre los pesos gonadales de 50 a 150 g.
+
+\newpage
+**2.4. Histograma de índice gonadosomático (g)**
 
 ```{r}
 data<-dat%>%mutate(IGS = ((`PESO_GONADA_(g)`/`PESO_(g)`)*100))
-data%>%ggplot(aes(x=IGS))+ geom_histogram( col='black', fill='blue', alpha=0.5)+labs(title="Histograma de índice gonadosomático")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Índice gonadosomático")+theme_classic()
+data%>%ggplot(aes(x=IGS, fill=ESTADIO))+ geom_histogram(bins=5, col='black', alpha=0.5)+labs(caption="Fig 4. Histograma de índice gonadosomático")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Índice gonadosomático %")+theme_classic()
 ```
 
-### 2. TABLAS DE FRECUENCIAS
+En la Fig 4, se puede observar la distribución del índice gonadosomático en relación al estadío de maduración de machos de la cepa Lochy de _Salmo salar_. El IGS no presenta una distribución normal en animales maduros e inmaduros.
 
-- Identifica si los datos están balanceados o no entre tratamientos usando tablas de frecuencia (4 puntos).
-**2.1. Peso corporal (g) por sexo, estadío de madurez y familia**
+## 3. TABLAS DE FRECUENCIAS
+
+**Identificar si los datos están balanceados o no entre tratamientos usando tablas de frecuencias**
+
+**3.1. Datos por estadío de madurez y familia**
 
 ```{r}
-table1<-table(data$SEXO, data$ESTADIO, data$FAMILIA)
-pander::pander(table1, caption="Tabla de frecuencias para peso corporal por sexo, cepa y familia")
+table<-table(dat$FAMILIA, dat$ESTADIO)
+knitr::kable(table, align = "ccc", caption = "Cantidad de animales por estadío de maduración y familia")
 ```
 
-### 3. RELACIÓN ENTRE VARIABLES
+Para efectuar el muestreo en los reproductores machos de la cepa Lochy cultivados en agua dulce, los peces fueron clasificados por estadío de madurez considerando la expresión de características sexuales secundarias de maduración.  
 
-Establece relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos (4 puntos).
+Se empleó un diseño que consistía en la selección de 40 peces en total de 20 familias, de estos, 20 salmones machos fueron maduros y 20 fueron inmaduros, es decir que, se eligió un salmón macho maduro y uno inmaduro por familia. 
 
-**3.1. CORRELACIÓN**
+Con estos antecedentes se presenta un diseño balanceado de casos y controles.
 
-**3.1.1. Correlación entre peso y longitud**
+\newpage
 
-H0: La correlación poblacional entre peso y longitud es igual a 0
-H1: La correlación poblacional entre peso y longitud es distinta de 0
+## 4. RELACIÓN ENTRE VARIABLES
+
+**Establecer relación entre variables cuantitativas y factores usando gráficas de correlación, boxplot, interacción o de tamaño de los efectos**
+
+**4.1. CORRELACIÓN**
+
+**4.1.1. Correlación entre peso y longitud**
 
 ```{r}
-data%>%ggplot(aes(x=data$`PESO_(g)`, y= data$`LONGITUD_(cm)`))+ geom_point()+labs(title="Histograma de índice gonadosomático")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso corporal (g)", y="Longitud (cm)")+ geom_smooth(method = "lm", se = FALSE)+theme_classic()
-
-cor_L_P<- cor.test(x=data$`PESO_(g)`, y= data$`LONGITUD_(cm)`  , method = "pearson", conf.level = 0.95)
-cor_L_P
-IC_cor_L_P <-cor_L_P$conf.int
-IC_cor_L_P
-pander::pander(cor_L_P, caption = "Prueba de hipótesis para el coeficiente de correlación entre Longitud y Peso.")
+data%>%ggplot(aes(x=`PESO_(g)`, y=`LONGITUD_(cm)`, colour=ESTADIO))+ geom_point()+labs(caption="Fig 5. Correlación entre peso y longitud corporal")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso corporal (g)", y="Longitud (cm)")+ geom_smooth(formula = y ~ x, method = "lm", se = FALSE)+theme_classic()
 
 ```
 
-**3.1.2. Correlación entre peso corporal y peso gonadal**
+En la figura 5, se observa la correlación entre las variables de peso y longitud corporal de los machos maduros e inmaduros de la cepa Lochy. Visualmente no se observa una correlación fuerte en ambos casos.
+
+\newpage
+**4.1.2. Correlación entre peso corporal y peso gonadal**
 
 ```{r}
+data%>%ggplot(aes(x=`PESO_(g)`, y= `PESO_GONADA_(g)`, colour=ESTADIO))+ geom_point()+labs(caption="Fig 6. Correlación entre peso corporal y peso gonadal")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso corporal (g)", y="Peso gonadal (g)")+ geom_smooth(formula = y ~ x,method = "lm", se = FALSE)+theme_classic()
 
 ```
 
-**3.1.3. Correlación entre peso corporal e IGS**
+En la Figura 6. Se puede observar la correlación entre peso corporal y peso gonadal. Para los dos grupos, la correlación es lineal es decir que se presenta una correlación nula. 
+
+\newpage
+**4.1.3. Correlación entre peso corporal e IGS**
 
 ```{r}
-
+data%>%ggplot(aes(x=`PESO_(g)`, y= IGS, colour=ESTADIO))+ geom_point()+labs(caption="Fig 7. Correlación entre peso corporal e IGS")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso corporal (g)", y="IGS")+ geom_smooth(formula = y ~ x,method = "lm", se = FALSE)+theme_classic()
 ```
+En la figura 7, se observa la correlación entre las variables peso corporal e IGS para machos de la cepa Lochy. Existe una correlación nula entre ambas variables en el caso de los animales inmaduros y una correlación negativa débil en el caso de los machos maduros.
 
-**3.1.4. Correlación entre longitud y peso gonadal**
+\newpage
+
+**4.1.4. Correlación entre longitud y peso gonadal**
 
 ```{r}
-
+data%>%ggplot(aes(x=`LONGITUD_(cm)`, y= `PESO_GONADA_(g)`, colour=ESTADIO))+ geom_point()+labs(caption="Fig 8. Correlación entre longitud y peso gonadal")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Longitud (cm)", y="Peso gonadal (g)")+ geom_smooth(formula = y ~ x,method = "lm", se = FALSE)+theme_classic()
 ```
 
-**3.1.5. Correlación entre longitud e IGS**
+En la Fig 8. Se observa la correlación entre la longitud corporal y el peso gonadal de machos de la cepa Lochy para ambos estadíos de maduración. Se presenta una correlación nula para las variables en animales inmaduros y tampoco se nota una correlación en los animales maduros, aún así se nota una tendencia negativa para este último grupo.
+
+\newpage
+
+**4.1.5. Correlación entre longitud e IGS**
 
 ```{r}
-
+data%>%ggplot(aes(x=`LONGITUD_(cm)`, y= IGS, colour=ESTADIO))+ geom_point()+labs(caption="Fig 9. Correlación entre longitud e IGS")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Longitud (cm)", y="IGS")+ geom_smooth(formula = y ~ x,method = "lm", se = FALSE)+theme_classic()
 ```
 
-**3.1.6. Correlación entre  peso gonadal e IGS**
+En la figura 4.9 se observa la correlación entre longitud e IGS en machos maduros e inmaduros de la cepa Lochy. Se nota una correlación nula para las variables en peces inmaduros y una correlación negativa débil para los peces maduros.
+
+\newpage
+**4.1.6. Correlación entre  peso gonadal e IGS**
 
 ```{r}
-
+data%>%ggplot(aes(x=`PESO_GONADA_(g)` , y= IGS, colour=ESTADIO))+ geom_point()+labs(caption="Fig 10.Correlación entre peso gonadal e IGS")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Peso gonadal (g)", y="IGS")+ geom_smooth(formula = y ~ x,method = "lm", se = FALSE)+theme_classic()
 ```
 
-**3.2. BOXPLOT**
+En la Fig 10, se observa la correlación entre peso gonadal e índice gonadosomático. No se nota una correlación para las variables en animales inmaduros puesto que, los datos se concentran en un solo grupo en la imagen. Para los peces maduros se nota una correlación positiva para ambas variables.
 
-**3.2.1. Peso por estadío y familia**
+\newpage 
+
+**4.2. BOXPLOT**
+
+**4.2.1. Peso por estadío**
 
 ```{r}
-data%>%ggplot(aes(x=data$ESTADIO, y= `PESO_(g)`))+ geom_boxplot()+labs(title="Peso por estadio y familia")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Estadío", y="Peso corporal (g)")+theme_classic()
+data%>%ggplot(aes(x=ESTADIO, y= `PESO_(g)`, fill=ESTADIO ))+ geom_boxplot()+labs(caption="Fig 11. Peso por estadío de maduración")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Estadío", y="Peso corporal (g)")+theme_classic()+ theme(legend.position="none")
 ```
 
-**3.2.2. Longitud por estadío y familia**
+En la Fig 11, se observa el boxplot de peso de acuerdo con el estadío de maduración de los peces machos de la cepa Lochy. Los animales inmaduros claramente alcanzaron mayores pesos que los peces maduros.
+
+\newpage
+**4.2.2. Longitud por estadío**
 
 ```{r}
-
+data%>%ggplot(aes(x=ESTADIO, y=`LONGITUD_(cm)` , fill=ESTADIO ))+ geom_boxplot()+labs(caption="Fig 12. Longitud por estadío de maduración")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Estadío", y="Longitud (cm)")+theme_classic()+ theme(legend.position="none")
 ```
 
-**3.2.3. Peso gonadal por estadío y familia**
+En la Fig 12, se observan los boxplots para la longitud corporal de peces machos de la cepa Lochy en relación a su estadío de maduración. Al igual que en el peso los animales maduros tuvieron menores longitudes que los peces inmaduros, aunque en este caso las diferencias son menores.
+
+\newpage
+**4.2.3. Peso gonadal por estadío**
 
 ```{r}
-
+data%>%ggplot(aes(x=ESTADIO, y=`PESO_GONADA_(g)` , fill=ESTADIO ))+ geom_boxplot()+labs(caption="Fig 13. Peso gonadal por estadío de maduración")+ theme (axis.text.x = element_text(face="bold", colour="black"), axis.text.y = element_text(face="bold", colour="black", angle=90, hjust=0.5))+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Estadío", y="Peso gonadal (g)")+theme_classic()+ theme(legend.position="none")
 ```
 
-**3.2.4. índice gonadosomático por estadío y familia**
+En la Fig 13, se observan los boxplots de peso gonadal por estadío de maduración. Hay claras diferencias entre ambos grupos. Los machos inmaduros presentaron menor peso gonadal (media=1g) que los machos maduros.
+
+\newpage
+**4.2.4. índice gonadosomático por estadío**
 
 ```{r}
-
+data%>%ggplot(aes(x=ESTADIO, y=IGS , fill=ESTADIO ))+ geom_boxplot()+labs(caption="Fig 14. índice gonadosomático por estadío de maduración")+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Estadío", y="índice gonadosomático")+theme_classic()+ theme(legend.position="none")
 ```
 
-**3.3. TAMAÑO DE LOS EFECTOS**
+En la Fig 14, se observan los boxplots para el IGS de acuerdo con el estadío de maduración de los machos de la cepa Lochy, se notan claras diferencias al igual que en el peso gonadal, es decir, los animales inmaduros tienen una media inferior de su IGS en relación a los peces maduros.
+
+\newpage
+**4.3. TAMAÑO DE LOS EFECTOS**
+
+**Efecto de los factores de maduración y familia sobre el peso (g)**
 
 ```{r}
-lot.design(maturation_age ~ data$Sex+ data$vgll3_Genotype+data$YC, xlab = "Factores", ylab = "Maduracion", main="Maduracion: Importancia factores")
+Maduracion<-as.factor(data$ESTADIO)
+Familia<-as.factor(data$FAMILIA)
+plot.design(data$`PESO_(g)` ~ Maduracion*Familia, xlab = "Estadío de maduración - Familia", ylab = "Peso (g)", main="Fig 15. Importancia de factores sobre el peso (g)")
 ```
 
+La familia presenta mayor efecto sobre el peso que la maduración en los peces machos de la cepa Lochy.
 
-### 4. ERRORES Y DATOS ATÍPICOS
-
-Identifica si existen errores, datos faltantes o valores atípicos (4 puntos).
-
-### 5. ESTADÍSTICA DESCRIPTIVA
-
-Resume los datos usando tablas y estadística descriptiva (4 puntos).
+\newpage
+**Efecto de los factores de maduración y familia sobre la longitud (cm)**
 
 ```{r}
+plot.design(data$`LONGITUD_(cm)` ~ Maduracion*Familia, xlab = "Estadío de maduración - Familia", ylab = "Longitud (cm)", main="Fig 16. Importancia de factores sobre la longitud (cm)")
+```
+
+La familia presnta mayor efecto sobre la longitud de los peces machos.
+
+\newpage
+**Efecto de los factores de maduración y familia sobre el peso gonadal (g)**
+
+```{r}
+plot.design(data$`PESO_GONADA_(g)` ~ Maduracion*Familia, xlab = "Estadío de maduración - Familia", ylab = "Peso gonadal (g)", main="Fig 17. Importancia de factores sobre el peso gonadal (g)")
+```
+
+El estadío de maduración presenta mayor efecto sobre el peso gonadal.
+
+\newpage
+**Efecto de los factores de maduración y familia sobre índice gonadosomático**
+
+```{r}
+plot.design(data$IGS ~ Maduracion*Familia, xlab = "Estadío de maduración - Familia", ylab = "IGS (%)", main="Fig.18: Importancia factores sobre el IGS (%)")
+```
+
+La maduración presenta mayor efecto sobre el IGS de los peces machos.
+
+\newpage
+**4.4. GRÁFICAS DE INTERACCIÓN**
+
+**Peso (g)**
+
+```{r}
+data%>%ggplot() +aes(x = FAMILIA, color = ESTADIO, group = ESTADIO, 
+y = `PESO_(g)`) +stat_summary(fun.y = mean, geom = "point") +labs(caption="Fig 19. Interacción de factores para peso (g)")+ stat_summary(fun.y = mean, geom = "line")+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Familia", y="Peso (g)")+theme_classic()
+```
+Existe interacción entre factores para el peso corporal pero no para todas las familias.
+
+\newpage
+**Longitud**
+
+```{r}
+data%>%ggplot() +aes(x = FAMILIA, color = ESTADIO, group = ESTADIO, 
+y =`LONGITUD_(cm)`) +stat_summary(fun.y = mean, geom = "point") +labs(caption="Fig 20. Interaccion de factores para Longitud")+  stat_summary(fun.y = mean, geom = "line")+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Familia", y="Longitud (cm)")+theme_classic()
+```
+Existe interacción entre el factor familia y estadío de maduración sobre la longitud corporal.
+
+\newpage
+**Peso gonadal**
+
+```{r}
+data%>%ggplot() +aes(x = FAMILIA, color = ESTADIO, group = ESTADIO, 
+y =`PESO_GONADA_(g)`) +stat_summary(fun.y = mean, geom = "point") +labs(caption="Fig 20. Interaccion de factores para Peso gonadal")+   stat_summary(fun.y = mean, geom = "line")+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Familia", y="Peso gonadal (g)")+theme_classic()
+```
+No existe interacción de los dos factores para el peso gonadal
+
+\newpage
+**Índice gonadosomático**
+
+```{r}
+data%>%ggplot() +aes(x = FAMILIA, color = ESTADIO, group = ESTADIO, 
+y = IGS) +stat_summary(fun.y = mean, geom = "point") +labs(caption="Fig 20. Interaccion de factores para IGS")+   stat_summary(fun.y = mean, geom = "line")+theme(panel.background = element_rect(fill = "transparent"))+labs(x= "Familia", y="IGS (%)")+theme_classic()
+```
+No existe interacción entre factores para el IGS
+
+## 5. ERRORES Y DATOS ATÍPICOS
+
+En las gráficas desarrolladas anteriormente, se puede constatar la presencia de valores atípicos en 3 variables continuas según su estadío de maduración:
+
+**5.1. Longitud por estadío:** Se presentó un individuo maduro de 49,5 cm sin embargo no es un dato que pueda afectar considerablemente la media o mediana de los datos ya que las longitudes en peces maduros están variando entre 54 y 60 cm sin el outlier.
+
+**5.2. Peso gonadal por estadío:** Se presentan dos datos atípicos. Uno, en los animales maduros donde los pesos de gónada están comprendidos entre 160 a 210g y, se presenta un peso gonadal de 230 g, mientras que, en los peces inmaduros un pez tiene un peso gonadal de 3.5 g, cuando los pesos gonadales para dicho estadío, se mantuvieron en 1 g para la mayoría de individuos. En ambos casos no se presenta un problema por la presencia de estos datos, debido a que son pocos datos y no hay una gran diferencias con las medias respectivas.
+
+**5.3. índice gonadosomático por estadío:** Se encuentran 4 outliers. Un animal inmaduro con IGS de 0.12% cuando la mayoría de indiviuos presentaron IGS de 0.03% y, en animales maduros 3 datos atípicos (2.23, 10.63 y 11.36%). Estos outliers se presentan justamente en los mismos animales que presentan errores atípicos para el peso gonadal, puesto que el IGS se calcula como la relación entre el peso gonadal total y el peso corporal de cada pez y esta información nos indica que existen animales con un mayor grado de maduración que el resto de los reproductores en este estudio.
+
+**Nota:** No se presentaron otros errores o datos faltantes.
+
+## 6. ESTADÍSTICA DESCRIPTIVA
+
+A continuación se exponen las tablas con datos de promedio, desviación estándar, cantidad y error estándar para cada una de las variables continuas en relación a sus estadío de maduración.
+
+**Estadística descriptiva para peso por maduración**
+
+```{r}
+peso <- data%>% group_by(ESTADIO)%>%summarise(Mean = mean(`PESO_(g)`), Sd = sd(`PESO_(g)`), n= n(),  SE = sd(`PESO_(g)`)/sqrt(n())) 
+knitr::kable(peso, align = "ccccc", caption = "Resumen descriptivo de peso por madurez")
+```
+
+**Estadística descriptiva para longitud por maduración**
+
+```{r}
+long <- data%>% group_by(ESTADIO)%>%summarise(Mean = mean(`LONGITUD_(cm)`), Sd = sd(`LONGITUD_(cm)`), n= n(),  SE = sd(`LONGITUD_(cm)`)/sqrt(n())) 
+knitr::kable(peso, align = "ccccc", caption = "Resumen descriptivo de longitud por madurez")
+```
+
+**Estadística descriptiva para peso gonadal por maduración**
+
+```{r}
+peso_gon <- data%>% group_by(ESTADIO)%>%summarise(Mean = mean(`PESO_GONADA_(g)`), Sd = sd(`PESO_GONADA_(g)`), n= n(),  SE = sd(`PESO_GONADA_(g)`)/sqrt(n())) 
+knitr::kable(peso_gon, align = "ccccc", caption = "Resumen descriptivo de peso gonadal por madurez")
+```
+
+**Estadística descriptiva para IGS por maduración**
+
+```{r}
+igs <- data%>% group_by(ESTADIO)%>%summarise(Mean = mean(IGS), Sd = sd(IGS), n= n(),  SE = sd(IGS)/sqrt(n())) 
+knitr::kable(igs, align = "ccccc", caption = "Resumen descriptivo de IGS por madurez")
+```
+
+## 7. Análisis estadístico de los datos 
+
+**7.1.Prueba paramétrica**
+
+**7.1.1. Hipótesis de anova**
+
+**H0:** El estadío de maduración no tiene efecto sobre el índice gonadosomático.
+
+**H1:** El estadío de maduración tiene efecto sobre el índice gonadosomático.
+
+
+```{r}
+mat <- lm(IGS ~ ESTADIO, data=data)
+anova(mat)%>%kable(caption="Anova de una vía para el IGS en función del estadío de maduración", digits=2)
+```
+
+Con p=0 se rechaza la hipótesis nula, es decir que el estadío de maduración si tiene un efecto sobre el índice gonadosomático en machos de la cepa Lochy de _Salmo salar_.
+
+**7.1.2. Supuestos de ANOVA**
+
+-**Independencia**
+
+**H0:** No existe autocorrelación
+**H1:** Existe autorrelación
+
+```{r}
+dwtest(IGS ~ ESTADIO, data=data)
+```
+
+Se acepta la hipótesis nula de que no existe correlación de los datos.
+
+-**Homogeneidad de varianzas**
+
+**H0:** Las varianzas del IGS del grupo de peces maduros son iguales a las varianzas del grupo de peces inmaduros
+**H1:** Las varianzas del IGS del grupo de peces maduros son distintas a las varianzas del grupo de peces inmaduros
+
+```{r}
+lv<-leveneTest(IGS ~ ESTADIO, data=data)
+lv
+lv%>%kable(digits=3)
+```
+
+Con p<0.05 se rechaza la hipótesis nula es decir no hay homogeneidad de varianzas
+
+-**Normalidad**
+
+**H0:** La distribución es normal
+**H1:** La distribución no es normal
+
+```{r}
+aov_residuals <- residuals(object = mat)
+shapiro.test(x= aov_residuals)
+```
+
+Con p<0.05 no se cumple normalidad 
+
+-**Conclusión prueba paramétrica**
+
+Para el anova no se cumplen con los supuestos de normalidad y homocedasticidad, solo se cumple con el supuesto de independencia, por lo que se comprobarán los supuesto a través de la transformación de la variable respuesta, en este caso el índice gonadosomático.
+
+-**7.1.3. Transformación de variable respuesta**
+
+```{r}
+data_new<-data%>%mutate(ln=log(data$IGS), log=log(data$IGS,base=10), sqrt=sqrt(data$IGS), acos=(data$IGS) )
+
+#logaritmo natural
+ln <- lm(ln ~ ESTADIO, data=data_new)
+anova(ln)%>%kable(caption="Anova de una vía para el ln (IGS) en función del estadío de maduración", digits=2)
+dwtest(ln ~ ESTADIO, data=data_new)
+lv_ln<-leveneTest(ln ~ ESTADIO, data=data_new)
+lv_ln%>%kable(digits=3)
+aov_residuals_ln <- residuals(object = ln)
+shapiro.test(x= aov_residuals_ln)
+
+#logaritmo base 10
+log <- lm(log ~ ESTADIO, data=data_new)
+anova(log)%>%kable(caption="Anova de una vía para el log (IGS) en función del estadío de maduración", digits=2)
+dwtest(log ~ ESTADIO, data=data_new)
+lv_log<-leveneTest(log ~ ESTADIO, data=data_new)
+lv_log%>%kable(digits=3)
+aov_residuals_log <- residuals(object = log)
+shapiro.test(x= aov_residuals_log)
+
+# raiz cuadrada
+sqrt <- lm(sqrt ~ ESTADIO, data=data_new)
+anova(sqrt)%>%kable(caption="Anova de una vía para el sqrt (IGS) en función del estadío de maduración", digits=2)
+dwtest(sqrt ~ ESTADIO, data=data_new)
+lv_sqrt<-leveneTest(sqrt ~ ESTADIO, data=data_new)
+lv_sqrt%>%kable(digits=3)
+aov_residuals_sqrt <- residuals(object = sqrt)
+shapiro.test(x= aov_residuals_sqrt)
+
+
+# arcoseno
+acos <- lm(acos ~ ESTADIO, data=data_new)
+anova(acos)%>%kable(caption="Anova de una vía para el acos (IGS) en función del estadío de maduración", digits=2)
+dwtest(acos ~ ESTADIO, data=data_new)
+lv_acos<-leveneTest(acos ~ ESTADIO, data=data_new)
+lv_acos%>%kable(digits=3)
+aov_residuals_acos <- residuals(object = acos)
+shapiro.test(x= aov_residuals_acos)
 
 ```
 
+ln: se acepta nula de que no hay correlación, p>0.05 entonces se cumple homocedasticidad, p <0.05 entonces no se cumple normalidad (puedo usar este con enfoque no parametrico) o puedo usar con la variable respuesta directamente la prueba no parametrica
 
-# Referencias 
+log: si independencia, si homocedaticidad, no normalidad
+
+sqrt: si independencia, no homocedaticidad, no normalidad
+
+acos: si independencia, no homocedaticidad, no normalidad
+
+**Conclusión de transformaciones:** A pesar de realizar varias transformaciones, los supuestos de anova no se cumplen, por lo que se opta por realizar un análisis de prueba no paramétrica para la variable respuesta IGS.
+
+-**7.1.4. Prueba no paramétrica**
+
+**Supuestos**
+
+-**Independencia** 
+
+```{r}
+maduro<-data%>%filter(ESTADIO=="MADURO")%>%select(IGS,ESTADIO)
+inmaduro<-data%>%filter(ESTADIO=="INMADURO")%>%select(IGS, ESTADIO)
+wilcox.test(maduro$IGS, inmaduro$IGS, alternative = "g",paired = FALSE)
+```
+
+IGSMADUROS>QUE PRA INMAUROS
+
+**GREATER**
+
+H0: EL IGS EN MADUROS ES  MENOR IGUAL AL IGS EN INMADUROS
+H1: EL IGS EN MADUROS ES MAYOR QUE EN INAMDUROS
+
+**Conclusión**: EL IGS EN MADUROS ES MAYOR QUE EN INAMDUROS
+
+
+## 8. Interpreta resultados y realiza conclusión
+
+
+
