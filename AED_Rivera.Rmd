@@ -338,21 +338,7 @@ knitr::kable(igs, align = "ccccc", caption = "Resumen descriptivo de IGS por mad
 
 **7.1.Prueba paramétrica**
 
-**7.1.1. Hipótesis de anova**
-
-**H0:** El estadío de maduración no tiene efecto sobre el índice gonadosomático.
-
-**H1:** El estadío de maduración tiene efecto sobre el índice gonadosomático.
-
-
-```{r}
-mat <- lm(IGS ~ ESTADIO, data=data)
-anova(mat)%>%kable(caption="Anova de una vía para el IGS en función del estadío de maduración", digits=2)
-```
-
-Con p=0 se rechaza la hipótesis nula, es decir que el estadío de maduración si tiene un efecto sobre el índice gonadosomático en machos de la cepa Lochy de _Salmo salar_.
-
-**7.1.2. Supuestos de ANOVA**
+**7.1.1. Supuestos de ANOVA**
 
 -**Independencia**
 
@@ -368,6 +354,7 @@ Se acepta la hipótesis nula de que no existe correlación de los datos.
 -**Homogeneidad de varianzas**
 
 **H0:** Las varianzas del IGS del grupo de peces maduros son iguales a las varianzas del grupo de peces inmaduros
+
 **H1:** Las varianzas del IGS del grupo de peces maduros son distintas a las varianzas del grupo de peces inmaduros
 
 ```{r}
@@ -438,7 +425,13 @@ shapiro.test(x= aov_residuals_acos)
 
 ```
 
-ln: se acepta nula de que no hay correlación, p>0.05 entonces se cumple homocedasticidad, p <0.05 entonces no se cumple normalidad (puedo usar este con enfoque no parametrico) o puedo usar con la variable respuesta directamente la prueba no parametrica
+**Resumen de transformaciones**
+
+
+
+
+
+**Logaritmo natural**: se acepta nula de que no hay correlación, p>0.05 entonces se cumple homocedasticidad, p <0.05 entonces no se cumple normalidad (puedo usar este con enfoque no parametrico) o puedo usar con la variable respuesta directamente la prueba no parametrica
 
 log: si independencia, si homocedaticidad, no normalidad
 
