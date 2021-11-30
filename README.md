@@ -30,6 +30,14 @@ Tabla 1: Variables medidas en el muestreo de maduración de reproductores machos
 
 ## Métodos estadísticos aplicados
 
-Las variables respuesta analizadas en este trabajo fueron, el índice gonadosomático (IGS - %) y peso gonadal (g) en función del estadío de maduración, sin considerar la familia de la que provenían los individuos. Inicialemte se realizó un ANOVA de una vía y se dio paso a la comprobación del cumplimiento de supuestos. Al no cumplir ocn la prueba de normalidad se aplicaron pruebas estadísticas no paramétricas para evaluar las diferencias entre ambos grupos.
+La variable respuesta analizada en este trabajo fue el índice gonadosomático (IGS - %) en función del factor de clasificación del estadío de maduración, sin considerar la familia de la que provenían los individuos. Inicialemte se realizó un ANOVA de una vía y se dio paso a la comprobación del cumplimiento de supuestos. 
+Al no cumplir con la prueba de normalidad se aplicó la transformación de datos probando con la raíz cuadrada, el logaritmo en base 10, el logaritmo natural y el arcoseno del IGS, considerado que la variable respuesta fue un porcentaje. Ninguna transformación cumplió por completo con todos los supuestos y únicamente con el logartimo natural del IGS se cumplió con la independencia y homocedaticidad.  Finalmente y considerando lo anterior, se aplicó una prueba estadística no paramétrica para comprobar si existen diferencias entre el IGS de peces maduros e inmaduros.
 
 ## Conclusión principal
+
+El índice gonadosomático en peces machos de la cepa Lochy de _Salmo salar_ es mayor en machos maduros que en en machos inmaduros. Esto se pudo comprobar gracias a la aplicación de una prueba estadística no paramétrica debido a que no se cumplieron los supuestos para realizar un anova.
+
+
+
+
+
