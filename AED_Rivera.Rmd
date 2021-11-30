@@ -31,6 +31,8 @@ Las librerías empleadas en el desarrrollo de este reporte fueron:
 |dplyr|permite la manipulación y distintas operaciones con data frames (trabajo con tuberías)|
 |ggplot2|Visualización de datos a través de generación de gráficos|
 |knitr|Generación y estética de tablas|
+|lmtest|Colección de pruebas para diagnosticar regresión lineal|
+|car|Funciones para acompañar análisis de regresión|
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F)
@@ -425,27 +427,27 @@ shapiro.test(x= aov_residuals_acos)
 
 ```
 
-**Resumen de transformaciones**
+**Resumen de cumplimiento de supuestos con las transformaciones**
 
-
-
-
-
-**Logaritmo natural**: se acepta nula de que no hay correlación, p>0.05 entonces se cumple homocedasticidad, p <0.05 entonces no se cumple normalidad (puedo usar este con enfoque no parametrico) o puedo usar con la variable respuesta directamente la prueba no parametrica
-
-log: si independencia, si homocedaticidad, no normalidad
-
-sqrt: si independencia, no homocedaticidad, no normalidad
-
-acos: si independencia, no homocedaticidad, no normalidad
+|**Transformación**|**Independencia**|**Homocedasticidad**|**Normalidad**|
+|:------------:|:----------:|:----------:|:----------:|
+|logaritmo natural|SI|SI|NO|
+|logaritmo base 10|SI|NO|NO|
+|raíz cuadrada|SI|NO|NO|
+|Arcoseno|SI|NO|NO|
+|logaritmo natural|SI|SI|NO|
 
 **Conclusión de transformaciones:** A pesar de realizar varias transformaciones, los supuestos de anova no se cumplen, por lo que se opta por realizar un análisis de prueba no paramétrica para la variable respuesta IGS.
 
 -**7.1.4. Prueba no paramétrica**
 
-**Supuestos**
+**Hipótesis**
 
--**Independencia** 
+**H0:** El índice gonadosomático en peces machos maduros de la cepa Lochy de _Salmo salar_ es menor igual que el índice gonadosomático de peces machos inmaduros
+
+**H1:** El índice gonadosomático en peces machos maduros de la cepa Lochy de _Salmo salar_ es mayor que el índice gonadosomático de peces machos inmaduros
+
+-**Prueba de Wilcox** 
 
 ```{r}
 maduro<-data%>%filter(ESTADIO=="MADURO")%>%select(IGS,ESTADIO)
@@ -453,17 +455,18 @@ inmaduro<-data%>%filter(ESTADIO=="INMADURO")%>%select(IGS, ESTADIO)
 wilcox.test(maduro$IGS, inmaduro$IGS, alternative = "g",paired = FALSE)
 ```
 
-IGSMADUROS>QUE PRA INMAUROS
-
-**GREATER**
-
-H0: EL IGS EN MADUROS ES  MENOR IGUAL AL IGS EN INMADUROS
-H1: EL IGS EN MADUROS ES MAYOR QUE EN INAMDUROS
-
-**Conclusión**: EL IGS EN MADUROS ES MAYOR QUE EN INAMDUROS
+**Conclusión**: Con p<0.05, se rechaza la hipótesis nula y se acepta que el índice gonadosomático en peces machos maduros de la cepa Lochy de _Salmo salar_ es mayor que el índice gonadosomático de peces machos inmaduros.
 
 
 ## 8. Interpreta resultados y realiza conclusión
 
 
+Para el anova no se cumplen con los supuestos de normalidad y homocedasticidad, solo se cumple con el supuesto de independencia, por lo que se comprobarán los supuesto a través de la transformación de la variable respuesta, en este caso el índice gonadosomático.
+
+A pesar de realizar varias transformaciones, los supuestos de anova no se cumplen, por lo que se opta por realizar un análisis de prueba no paramétrica para la variable respuesta IGS.
+
+
+Se busca un alternativo para la prueba de anova en pruebas no parametricas
+
+Con p<0.05, se rechaza la hipótesis nula y se acepta que el índice gonadosomático en peces machos maduros de la cepa Lochy de _Salmo salar_ es mayor que el índice gonadosomático de peces machos inmaduros.
 
